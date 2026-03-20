@@ -1,0 +1,14 @@
+[
+  {
+    "key": "TEST-KEY-1",
+    "used": true
+  },
+  {
+    "key": "TEST-KEY-2",
+    "used": false
+  },
+  {
+    "key": "TEST-KEY-3",
+    "used": false
+  }
+]
