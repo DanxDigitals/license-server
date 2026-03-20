@@ -44,4 +44,8 @@ app.get("/test", (req, res) => {
     res.send(`Your key is: ${keyObj.key}`);
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("Server running on port " + PORT);
+});
