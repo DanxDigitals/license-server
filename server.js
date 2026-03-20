@@ -1,23 +1,30 @@
 require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
+const { MailerSend, EmailParams, Sender, Recipient } = require("mailersend");
+
+const mailerSend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY,
+});
 
 const app = express();
 app.use(express.json());
 
 async function sendKeyEmail(email, key) {
-    await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: email,
-        subject: "Your License Key",
-        html: `
-            <h2>Thank you for your purchase</h2>
+    const sentFrom = new Sender("noreply@test-z0vklo6v977l7qrx.mlsender.net", "DayDraft Pro");
+    const recipients = [new Recipient(email)];
+
+    const emailParams = new EmailParams()
+        .setFrom(sentFrom)
+        .setTo(recipients)
+        .setSubject("Your License Key")
+        .setHtml(`
+            <h2>Thank you for your purchase!</h2>
             <p>Your license key is:</p>
             <h1>${key}</h1>
-        `
-    });
+        `);
+
+    await mailerSend.email.send(emailParams);
 }
 
 app.post("/webhook", async (req, res) => {
