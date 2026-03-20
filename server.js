@@ -7,7 +7,14 @@ app.use(express.json());
 app.post("/webhook", (req, res) => {
     console.log("Webhook received:", req.body);
 
-    const data = JSON.parse(fs.readFileSync("keys.json"));
+let data = [];
+
+try {
+    data = JSON.parse(fs.readFileSync("keys.json"));
+} catch (err) {
+    console.error("Error reading keys.json:", err);
+    return res.status(500).send("Server error");
+}
 
     const keyObj = data.find(k => !k.used);
 
@@ -27,8 +34,14 @@ app.post("/webhook", (req, res) => {
 app.get("/test", (req, res) => {
     const fs = require("fs");
 
-    const data = JSON.parse(fs.readFileSync("keys.json"));
+let data = [];
 
+try {
+    data = JSON.parse(fs.readFileSync("keys.json"));
+} catch (err) {
+    console.error("Error reading keys.json:", err);
+    return res.status(500).send("Server error");
+}
     const keyObj = data.find(k => !k.used);
 
     if (!keyObj) {
